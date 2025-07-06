@@ -81,7 +81,7 @@
           <item>
            <widget class="QStackedWidget" name="pagesMenu">
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="pageFile">
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -127,7 +127,7 @@
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
                  <item>
-                  <widget class="QListWidget" name="listWidget"/>
+                  <widget class="QListWidget" name="listWidgetFiles"/>
                  </item>
                 </layout>
                </widget>
@@ -168,7 +168,7 @@
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_7">
                  <item>
-                  <widget class="QListWidget" name="listWidget_2"/>
+                  <widget class="QListWidget" name="listWidgetFilterY"/>
                  </item>
                 </layout>
                </widget>

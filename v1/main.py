@@ -8,6 +8,8 @@ class MyWindow(QMainWindow):
         self.ui.setupUi(self)
         # Connect your buttons here...
 
+
+
 if __name__ == "__main__":
     app = QApplication([])
     window = MyWindow()
