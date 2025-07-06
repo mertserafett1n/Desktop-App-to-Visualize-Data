@@ -4,6 +4,8 @@ import sys
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem, QMessageBox
 import pandas as pd
+
+
 # Important:
 # You need to run the following command to generate the ui_form.py file
 #     pyside6-uic form.ui -o ui_form.py, or
@@ -16,8 +18,11 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+
+        self.data = {}
         self.uploaded_CSV_FilesNames = []
         self.available_CSV_FilesNames = []
+
         # switching pages
         self.ui.buttonFilterX.clicked.connect(lambda: self.ui.pagesMenu.setCurrentWidget(self.ui.pageFilterX))
         self.ui.buttonFilterY.clicked.connect(lambda: self.ui.pagesMenu.setCurrentWidget(self.ui.pageFilterY))
@@ -28,6 +33,15 @@ class MainWindow(QMainWindow):
         #ListWidget to show CSV Files
         self.ui.listWidgetFiles.itemChanged.connect(self.update_available_csv_files)
 
+        #pageFilterX PART
+
+    def add_items_columX(self):
+        self.ui.comboBox.clear()
+
+        for file_path in self.available_CSV_FilesNames:
+            df = pd.read_csv(file_path, sep=';')
+            self.data[os.path.basename(file_path)] = df
+            self.ui.comboBox.addItems(df.columns)
 
     def update_available_csv_files(self):
         self.available_CSV_FilesNames.clear()
@@ -41,6 +55,7 @@ class MainWindow(QMainWindow):
                         self.available_CSV_FilesNames.append(full_path)
                         break
         print("Available files: ", self.available_CSV_FilesNames)
+        self.add_items_columX()
 
     def update_CSV_List(self):
         self.ui.listWidgetFiles.clear()
@@ -57,31 +72,38 @@ class MainWindow(QMainWindow):
         )
         if fname:
             try:
-                self.data = pd.read_csv(fname, sep=';')
-                for col in self.data.columns:
-                    if self.data[col].dtype == object:
+                df = pd.read_csv(fname, sep=';')
+
+                # Virgül nokta fix
+                for col in df.columns:
+                    if df[col].dtype == object:
                         try:
-                            self.data[col] = (
-                                self.data[col]
+                            df[col] = (
+                                df[col]
                                 .astype(str)
-                                .str.replace(",", ".", regex = False)
+                                .str.replace(",", ".", regex=False)
                                 .astype(float)
                             )
                         except ValueError:
                             print("Donuşturulemedi.")
                             pass
+
+                # Timestamp fix
+                if "Timestamp" in df.columns:
+                    df["Timestamp"] = pd.to_datetime(df["Timestamp"], format="%H:%M:%S.%f")
+
+                # DOSYA ADI
+                file_name = os.path.basename(fname)
+                self.data[file_name] = df  # dict'e ekle
+
             except Exception as e:
                 QMessageBox.critical(self, "Hata", f"Dosya okunamadı:\n{str(e)}")
                 return
-            #Adding to uploaded filename list
+
+            # lısteye eklemece
             if fname and fname not in self.uploaded_CSV_FilesNames:
                 self.uploaded_CSV_FilesNames.append(fname)
                 self.update_CSV_List()
-
-
-
-            if "Timestamp" in self.data.columns:
-                self.data["Timestamp"] = pd.to_datetime(self.data["Timestamp"], format = "%H:%M:%S.%f")
 
 
 
