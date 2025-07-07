@@ -1,6 +1,8 @@
 # This Python file uses the following encoding: utf-8
 import os.path
 import sys
+
+from PyQt6.QtWidgets import QComboBox, QLabel
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem, QMessageBox
 import pandas as pd
@@ -18,7 +20,8 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-
+        self.comboBoxYAxis = []
+        self.ui.spinBox.setRange(1,5)
         self.data = {}
         self.uploaded_CSV_FilesNames = []
         self.available_CSV_FilesNames = []
@@ -32,16 +35,52 @@ class MainWindow(QMainWindow):
 
         #ListWidget to show CSV Files
         self.ui.listWidgetFiles.itemChanged.connect(self.update_available_csv_files)
+        self.ui.listWidgetFiles.itemChanged.connect(self.update_items_ComboY)
 
-        #pageFilterX PART
+        #self.ui.listWidgetFilterY.currentItemChanged.connect(self.update_items_ComboY)
 
-    def add_items_columX(self):
+        # FILTER Y COMBOBOXES!!!!!
+        self.ui.spinBox.valueChanged.connect(self.update_Y_Axis_list)
+
+    def update_items_ComboY(self):
+        for i in self.comboBoxYAxis:
+            self.comboBoxYAxis[i].clear()
+            self.add_items_comboBox(self.comboBoxYAxis[i])
+
+    def update_Y_Axis_list(self):
+        desired_count = self.ui.spinBox.value()
+        current_count = self.ui.listWidgetFilterY.count()
+
+        # adding comboBox
+        if desired_count > current_count:
+            for i in range(desired_count - current_count):
+                item = QListWidgetItem()
+                #labelOfCombo = QLabel("1")
+                comboBox = QComboBox()
+                self.add_items_comboBox(comboBox)
+                self.comboBoxYAxis.append(comboBox)
+                print("Available Y axis comboBoxes: ", self.comboBoxYAxis)
+                self.ui.listWidgetFilterY.addItem(item) #LABEL ??
+                self.ui.listWidgetFilterY.setItemWidget(item,comboBox)
+        elif desired_count < current_count:
+            for _ in range(current_count - desired_count):
+                last_row = self.ui.listWidgetFilterY.count() - 1
+                self.comboBoxYAxis.remove(self.comboBoxYAxis[last_row])
+                item = self.ui.listWidgetFilterY.takeItem(last_row)
+                widget = self.ui.listWidgetFilterY.itemWidget(item)
+                if widget is not None:
+                    widget.deleteLater()
+                del item
+
+
+
+    def add_items_comboBox(self, a):
         self.ui.comboBox.clear()
 
         for file_path in self.available_CSV_FilesNames:
             df = pd.read_csv(file_path, sep=';')
             self.data[os.path.basename(file_path)] = df
-            self.ui.comboBox.addItems(df.columns)
+            a.addItems(df.columns)
 
     def update_available_csv_files(self):
         self.available_CSV_FilesNames.clear()
@@ -55,7 +94,7 @@ class MainWindow(QMainWindow):
                         self.available_CSV_FilesNames.append(full_path)
                         break
         print("Available files: ", self.available_CSV_FilesNames)
-        self.add_items_columX()
+        self.add_items_comboBox(self.ui.comboBox)
 
     def update_CSV_List(self):
         self.ui.listWidgetFiles.clear()
