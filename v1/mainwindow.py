@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QComboBox, QLabel
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem, QMessageBox
 import pandas as pd
-
+import pyqtgraph as pg
 
 # Important:
 # You need to run the following command to generate the ui_form.py file
@@ -42,12 +42,38 @@ class MainWindow(QMainWindow):
         # FILTER Y COMBOBOXES!!!!!
         self.ui.spinBox.valueChanged.connect(self.update_Y_Axis_list)
 
+        #GRAFİK ÇİZİM YERİ.
+        self.plot_widget = pg.PlotWidget()
+        self.plot_widget.addLegend()
+        #self.plot_widget.showGrid(x=True, y =True)
+        self.ui.horizontalLayout_3.addWidget(self.plot_widget)
 
+        self.ui.buttonFile.clicked.connect(self.plot_graph)
 
+    def plot_graph(self):
+        x_index = self.ui.comboBox.currentIndex()
+        filename, x_col = self.ui.comboBox.itemData(x_index)
+        x = self.data[filename][x_col]
 
+        y_series = []
+        for combo in self.comboBoxYAxis:
+            index = combo.currentIndex()
+            filename, y_col = combo.itemData(index)
+            y = self.data[filename][y_col]
+            y_series.append(y)
 
+        self.plot_widget.clear()
+        self.plot_widget.addLegend()
 
+        if pd.api.types.is_datetime64_any_dtype(x):
+            x = x.astype('int64') // 10 ** 9
 
+        #colors will come from listwidgetFilterY!!!!
+        colors = ['r', 'g', 'b', 'm', 'c', 'y']
+        for i, y in enumerate(y_series):
+            pen = pg.mkPen(color=colors[i % len(colors)], width = 3)
+            #label = f"{filename} - {y_cols[i]}"
+            self.plot_widget.plot(x, y, pen=pen, downsample=10, autoDownsample = True)
 
     def update_items_ComboY(self):
         for comboBox in self.comboBoxYAxis:
@@ -81,13 +107,16 @@ class MainWindow(QMainWindow):
                 del item
 
 
-    def add_items_comboBox(self, a):
-        a.clear()
+    def add_items_comboBox(self, combo):
+        combo.clear()
+        for idx, file_path in enumerate(self.available_CSV_FilesNames):
+            filename = os.path.basename(file_path)
+            df = self.data[filename]
+            file_number = idx + 1
 
-        for file_path in self.available_CSV_FilesNames:
-            df = pd.read_csv(file_path, sep=';')
-            self.data[os.path.basename(file_path)] = df
-            a.addItems(df.columns)
+            for col in df.columns:
+                display_text = f"CSV{file_number} - {col}"
+                combo.addItem(display_text, (filename, col))
 
     def update_available_csv_files(self):
         self.available_CSV_FilesNames.clear()
@@ -95,23 +124,25 @@ class MainWindow(QMainWindow):
         for i in range(self.ui.listWidgetFiles.count()):
             item = self.ui.listWidgetFiles.item(i)
             if item.checkState() == Qt.CheckState.Checked:
-                display_name = item.text()
-                for full_path in self.uploaded_CSV_FilesNames:
-                    if os.path.basename(full_path) == display_name:
-                        self.available_CSV_FilesNames.append(full_path)
-                        break
+                full_path = item.data(Qt.ItemDataRole.UserRole)
+                self.available_CSV_FilesNames.append(full_path)
         print("Available files: ", self.available_CSV_FilesNames)
         self.add_items_comboBox(self.ui.comboBox)
 
     def update_CSV_List(self):
         self.ui.listWidgetFiles.clear()
-        for file_name in self.uploaded_CSV_FilesNames:
-            short_name = os.path.basename(file_name)
-            item = QListWidgetItem(short_name)
+        for idx, file_path in enumerate(self.uploaded_CSV_FilesNames):
+            file_number = idx + 1
+            short_name = os.path.basename(file_path)
+            display_name = f"CSV{file_number}: {short_name}"
+
+            item = QListWidgetItem(display_name)
+
+            item.setData(Qt.ItemDataRole.UserRole, file_path)
+
             item.setFlags(item.flags() | Qt.ItemFlag.ItemIsUserCheckable)
             item.setCheckState(Qt.CheckState.Unchecked)
             self.ui.listWidgetFiles.addItem(item)
-
     def load_csv(self):
         fname, _ = QFileDialog.getOpenFileName(
             self, "CSV Sec", "", "CSV Dosyaları (*.csv)"
@@ -151,7 +182,7 @@ class MainWindow(QMainWindow):
                 self.uploaded_CSV_FilesNames.append(fname)
                 self.update_CSV_List()
 
-    
+
 
 
 
