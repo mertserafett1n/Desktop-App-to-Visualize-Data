@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self.comboBoxYAxis = []
-        self.ui.spinBox.setRange(1,5)
+        self.ui.spinBox.setRange(0,5)
         self.data = {}
         self.uploaded_CSV_FilesNames = []
         self.available_CSV_FilesNames = []
@@ -42,10 +42,17 @@ class MainWindow(QMainWindow):
         # FILTER Y COMBOBOXES!!!!!
         self.ui.spinBox.valueChanged.connect(self.update_Y_Axis_list)
 
+
+
+
+
+
+
+
     def update_items_ComboY(self):
-        for i in self.comboBoxYAxis:
-            self.comboBoxYAxis[i].clear()
-            self.add_items_comboBox(self.comboBoxYAxis[i])
+        for comboBox in self.comboBoxYAxis:
+            comboBox.clear()
+            self.add_items_comboBox(comboBox)
 
     def update_Y_Axis_list(self):
         desired_count = self.ui.spinBox.value()
@@ -62,6 +69,7 @@ class MainWindow(QMainWindow):
                 print("Available Y axis comboBoxes: ", self.comboBoxYAxis)
                 self.ui.listWidgetFilterY.addItem(item) #LABEL ??
                 self.ui.listWidgetFilterY.setItemWidget(item,comboBox)
+
         elif desired_count < current_count:
             for _ in range(current_count - desired_count):
                 last_row = self.ui.listWidgetFilterY.count() - 1
@@ -73,9 +81,8 @@ class MainWindow(QMainWindow):
                 del item
 
 
-
     def add_items_comboBox(self, a):
-        self.ui.comboBox.clear()
+        a.clear()
 
         for file_path in self.available_CSV_FilesNames:
             df = pd.read_csv(file_path, sep=';')
@@ -143,6 +150,10 @@ class MainWindow(QMainWindow):
             if fname and fname not in self.uploaded_CSV_FilesNames:
                 self.uploaded_CSV_FilesNames.append(fname)
                 self.update_CSV_List()
+
+    
+
+
 
 
 
