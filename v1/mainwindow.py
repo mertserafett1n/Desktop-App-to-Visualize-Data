@@ -73,9 +73,11 @@ class MainWindow(QMainWindow):
         x = self.data[filename][x_col]
 
         y_series = []
+        y_cols = []
         for combo in self.comboBoxYAxis:
             index = combo.currentIndex()
             filename, y_col = combo.itemData(index)
+            y_cols.append(y_col)
             y = self.data[filename][y_col]
             y_series.append(y)
 
@@ -90,8 +92,8 @@ class MainWindow(QMainWindow):
         colors = ['r', 'g', 'b', 'm', 'c', 'y']
         for i, y in enumerate(y_series):
             pen = pg.mkPen(color=colors[i % len(colors)], width = 3)
-            #label = f"{filename} - {y_cols[i]}"
-            self.plot_widget.plot(x, y, pen=pen, downsample=10, autoDownsample = True)
+            label = f"{y_cols[i]}"
+            self.plot_widget.plot(x, y, pen=pen, downsample=10, autoDownsample = True, name = label)
 
     def update_items_ComboY(self):
         for comboBox in self.comboBoxYAxis:
