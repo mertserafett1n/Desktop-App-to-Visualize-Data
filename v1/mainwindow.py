@@ -13,6 +13,23 @@ import pyqtgraph as pg
 #     pyside6-uic form.ui -o ui_form.py, or
 #     pyside2-uic form.ui -o ui_form.py
 from ui_form import Ui_MainWindow
+import resources_rc
+import pyqtgraph as pg
+
+class TimeAxisItem(pg.AxisItem):
+    def tickStrings(self, values, scale, spacing):
+        return [self.sec_to_time_string(v) for v in values]
+
+    def sec_to_time_string(self, seconds):
+        seconds = int(seconds)
+        h = seconds // 3600
+        m = (seconds % 3600) // 60
+        s = seconds % 60
+        return f"{h:02}:{m:02}:{s:02}"
+
+
+
+
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -43,10 +60,10 @@ class MainWindow(QMainWindow):
         self.ui.spinBox.valueChanged.connect(self.update_Y_Axis_list)
 
         #GRAFİK ÇİZİM YERİ.
-        self.plot_widget = pg.PlotWidget()
+        time_axis = TimeAxisItem(orientation='bottom')
+        self.plot_widget = pg.PlotWidget(axisItems={'bottom': time_axis})
         self.plot_widget.addLegend()
-        #self.plot_widget.showGrid(x=True, y =True)
-        self.ui.horizontalLayout_3.addWidget(self.plot_widget)
+        self.ui.verticalLayout_10.addWidget(self.plot_widget)
 
         self.ui.buttonFile.clicked.connect(self.plot_graph)
 
@@ -66,7 +83,8 @@ class MainWindow(QMainWindow):
         self.plot_widget.addLegend()
 
         if pd.api.types.is_datetime64_any_dtype(x):
-            x = x.astype('int64') // 10 ** 9
+            x = (x - x.iloc[0]).dt.total_seconds()
+
 
         #colors will come from listwidgetFilterY!!!!
         colors = ['r', 'g', 'b', 'm', 'c', 'y']
@@ -181,6 +199,9 @@ class MainWindow(QMainWindow):
             if fname and fname not in self.uploaded_CSV_FilesNames:
                 self.uploaded_CSV_FilesNames.append(fname)
                 self.update_CSV_List()
+
+
+
 
 
 
