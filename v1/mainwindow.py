@@ -3,7 +3,8 @@ import os.path
 import sys
 import glob
 from PyQt6.QtWidgets import QComboBox, QLabel
-from PyQt6.QtCore import Qt, QSettings, QTimer, QSize
+from PyQt6.QtCore import Qt, QSettings, QTimer, QSize, QPropertyAnimation, QEasingCurve, QParallelAnimationGroup
+from PyQt6 import QtGui
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QFileDialog, QListWidgetItem,
     QMessageBox, QDialog, QVBoxLayout, QWidget, QHBoxLayout,
@@ -44,9 +45,9 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.spinBox.setRange(0, 5)
+        self.menu_open = True
 
-
-
+        self.ui.buttonMenu.clicked.connect(self.toggle_menu)
 
         # switching pages
         self.ui.buttonFilterX.clicked.connect(lambda: self.ui.pagesMenu.setCurrentWidget(self.ui.pageFilterX))
@@ -369,6 +370,33 @@ class MainWindow(QMainWindow):
     def reset_filters(self):
         self.ui.lineEditMaxX.clear()
         self.ui.lineEditMinX.clear()
+
+    def toggle_menu(self):
+        # Left frame current and target width
+        left_width = self.ui.frameLeft.width()
+        new_width = 0 if self.menu_open else 400  # adjust to your preferred open size
+
+        # Animate frameLeft width
+        self.animation_left = QPropertyAnimation(self.ui.frameLeft, b"maximumWidth")
+        self.animation_left.setDuration(300)
+        self.animation_left.setStartValue(left_width)
+        self.animation_left.setEndValue(new_width)
+        self.animation_left.setEasingCurve(QEasingCurve.Type.InOutCubic)
+
+        # Combine animations if needed — here, right frame expands automatically with layout
+        self.animations = QParallelAnimationGroup()
+        self.animations.addAnimation(self.animation_left)
+        self.animations.start()
+
+        # Change icon
+        if self.menu_open:
+            # Closed state icon
+            self.ui.buttonMenu.setIcon(QtGui.QIcon(":/icons/feather/chevron-left.svg"))
+        else:
+            # Open state icon
+            self.ui.buttonMenu.setIcon(QtGui.QIcon(":/icons/feather/menu.svg"))
+
+        self.menu_open = not self.menu_open
 
 
 if __name__ == "__main__":
