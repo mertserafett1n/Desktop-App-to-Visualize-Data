@@ -2,6 +2,7 @@
 import os.path
 import sys
 import glob
+import csv
 from PyQt6.QtWidgets import QComboBox, QLabel
 from PyQt6.QtCore import Qt, QSettings, QTimer, QSize, QPropertyAnimation, QEasingCurve, QParallelAnimationGroup
 from PyQt6 import QtGui
@@ -13,10 +14,6 @@ from PyQt6.QtWidgets import (
 import pandas as pd
 import pyqtgraph as pg
 from PyQt6.QtGui import QDoubleValidator
-# Important:
-# You need to run the following command to generate the ui_form.py file
-#     pyside6-uic form.ui -o ui_form.py, or
-#     pyside2-uic form.ui -o ui_form.py
 from ui_form import Ui_MainWindow
 import resources_rc
 
@@ -57,6 +54,9 @@ class MainWindow(QMainWindow):
         self.ui.buttonUploadCSV.installEventFilter(self)
 
         self.ui.buttonUploadCSV.clicked.connect(self.load_csv)
+        self.ui.buttonAlt.clicked.connect(self.showMinimized)
+        self.ui.buttonMaximize.clicked.connect(self.toggle_maximize_restore)
+        self.ui.buttonClose.clicked.connect(self.close)
 
         #ListWidget to show CSV Files
         self.ui.listWidgetFiles.itemChanged.connect(self.update_available_csv_files)
@@ -87,6 +87,10 @@ class MainWindow(QMainWindow):
         last_folder = self.settings.value("csv_folder", "")
         if last_folder:
             self.load_folder(folder_path=last_folder)
+
+        self.marker_comboFunc()
+
+# -------------------------------FUNCTIONS----------------------------------------------------
 
     def plot_graph(self, plot_widget=None):
         x_index = self.ui.comboBox.currentIndex()
@@ -132,7 +136,7 @@ class MainWindow(QMainWindow):
             x = (x - x.iloc[0]).dt.total_seconds()
 
         if self.ui.checkBoxFilterX.isChecked():
-            # Apply your min/max filter
+
             min_text = self.ui.lineEditMinX.text().strip()
             max_text = self.ui.lineEditMaxX.text().strip()
 
@@ -154,12 +158,32 @@ class MainWindow(QMainWindow):
 
             x = x[mask]
             y_series = [y[mask] for y in y_series]
+        plot_widget.showGrid(x = self.ui.checkBoxGridX.isChecked(), y = self.ui.checkBoxGridY.isChecked())
+        if self.ui.checkBoxHideMarker.isChecked():
+            marker_style = self.ui.comboMarkers.currentData()
+            marker_size = self.ui.comboMarkerSize.currentData()
+        else:
+            marker_style = None
+            marker_size = None
 
         colors = ['r', 'g', 'b', 'm', 'c', 'y']
+
         for i, y in enumerate(y_series):
             pen = pg.mkPen(color=colors[i % len(colors)], width=3)
             label = f"{display_texts[i]}"
-            plot_widget.plot(x, y, pen=pen, downsample=10, autoDownsample=True, name=label)
+
+            kwargs = dict(
+                pen=pen,
+                downsample=10,
+                autoDownsample=True,
+                name=label
+            )
+
+            if marker_style:
+                kwargs["symbol"] = marker_style
+                kwargs["symbolSize"] = marker_size
+
+            plot_widget.plot(x, y, **kwargs)
 
     def update_items_ComboY(self):
         for comboBox in self.comboBoxYAxis:
@@ -228,6 +252,7 @@ class MainWindow(QMainWindow):
             for col in df.columns:
                 display_text = f"CSV{file_number} - {col}"
                 combo.addItem(display_text, (filename, col))
+
     def update_available_csv_files(self):
         self.available_CSV_FilesNames.clear()
 
@@ -238,6 +263,7 @@ class MainWindow(QMainWindow):
                 self.available_CSV_FilesNames.append(full_path)
         print("Available files: ", self.available_CSV_FilesNames)
         self.add_items_comboBox(self.ui.comboBox)
+
     def update_CSV_List(self):
         self.ui.listWidgetFiles.clear()
         for idx, file_path in enumerate(self.uploaded_CSV_FilesNames):
@@ -262,8 +288,11 @@ class MainWindow(QMainWindow):
                 return
 
         try:
-            df = pd.read_csv(fname, sep=';')
 
+            df = pd.read_csv(fname, sep=';')
+            dfComma = pd.read_csv(fname, sep = ',')
+            if df.shape[1] == 1:
+                df = dfComma.copy()
             # Fix commas, etc.
             for col in df.columns:
                 if df[col].dtype == object:
@@ -279,7 +308,7 @@ class MainWindow(QMainWindow):
 
             # Timestamp fix
             if "Timestamp" in df.columns:
-                df["Timestamp"] = pd.to_datetime(df["Timestamp"], format="%H:%M:%S.%f")
+                df["Timestamp"] = pd.to_datetime(df["Timestamp"], format="mixed")
 
             file_name = os.path.basename(fname)
             self.data[file_name] = df
@@ -366,7 +395,6 @@ class MainWindow(QMainWindow):
                     self.ui.spinBox.setValue(self.ui.listWidgetFilterY.count())
                     break
 
-
     def reset_filters(self):
         self.ui.lineEditMaxX.clear()
         self.ui.lineEditMinX.clear()
@@ -374,7 +402,7 @@ class MainWindow(QMainWindow):
     def toggle_menu(self):
         # Left frame current and target width
         left_width = self.ui.frameLeft.width()
-        new_width = 0 if self.menu_open else 400  # adjust to your preferred open size
+        new_width = 0 if self.menu_open else 300  # adjust to your preferred open size
 
         # Animate frameLeft width
         self.animation_left = QPropertyAnimation(self.ui.frameLeft, b"maximumWidth")
@@ -397,6 +425,22 @@ class MainWindow(QMainWindow):
             self.ui.buttonMenu.setIcon(QtGui.QIcon(":/icons/feather/menu.svg"))
 
         self.menu_open = not self.menu_open
+
+    def marker_comboFunc(self):
+        self.ui.comboMarkers.addItem("Circle", "o")
+        self.ui.comboMarkers.addItem("Square", "s")
+        self.ui.comboMarkers.addItem("Triangle", "t")
+        self.ui.comboMarkers.addItem("Diamond", "d")
+        self.ui.comboMarkers.addItem("Plus", "+")
+        self.ui.comboMarkers.addItem("Cross", "x")
+        for size in range(1, 6):
+            self.ui.comboMarkerSize.addItem(f"{size} pt", size)
+
+    def toggle_maximize_restore(self):
+        if self.isMaximized():
+            self.showNormal()
+        else:
+            self.showMaximized()
 
 
 if __name__ == "__main__":

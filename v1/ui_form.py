@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(941, 643)
+        MainWindow.resize(933, 582)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setStyleSheet("")
         self.centralwidget.setObjectName("centralwidget")
@@ -41,6 +41,21 @@ class Ui_MainWindow(object):
         font.setPointSize(13)
         font.setBold(False)
         self.buttonFile.setFont(font)
+        self.buttonFile.setStyleSheet("#buttonSpecial {\n"
+"    background-color: #4A90E2;\n"
+"    color: #FFFFFF;\n"
+"    border: 1px solid #4A90E2;\n"
+"    border-radius: 4px;\n"
+"    padding: 8px 16px;\n"
+"}\n"
+"\n"
+"#buttonSpecial:hover {\n"
+"    background-color: #357ABD;\n"
+"}\n"
+"\n"
+"#buttonSpecial:pressed {\n"
+"    background-color: #2C5F99;\n"
+"}")
         self.buttonFile.setObjectName("buttonFile")
         self.horizontalLayout_2.addWidget(self.buttonFile)
         self.buttonFilterX = QtWidgets.QPushButton(parent=self.frameLeftMenu)
@@ -49,6 +64,21 @@ class Ui_MainWindow(object):
         font.setPointSize(13)
         font.setBold(False)
         self.buttonFilterX.setFont(font)
+        self.buttonFilterX.setStyleSheet("#buttonSpecial {\n"
+"    background-color: #4A90E2;\n"
+"    color: #FFFFFF;\n"
+"    border: 1px solid #4A90E2;\n"
+"    border-radius: 4px;\n"
+"    padding: 8px 16px;\n"
+"}\n"
+"\n"
+"#buttonSpecial:hover {\n"
+"    background-color: #357ABD;\n"
+"}\n"
+"\n"
+"#buttonSpecial:pressed {\n"
+"    background-color: #2C5F99;\n"
+"}")
         self.buttonFilterX.setObjectName("buttonFilterX")
         self.horizontalLayout_2.addWidget(self.buttonFilterX)
         self.buttonFilterY = QtWidgets.QPushButton(parent=self.frameLeftMenu)
@@ -57,6 +87,21 @@ class Ui_MainWindow(object):
         font.setPointSize(13)
         font.setBold(False)
         self.buttonFilterY.setFont(font)
+        self.buttonFilterY.setStyleSheet("#buttonSpecial {\n"
+"    background-color: #4A90E2;\n"
+"    color: #FFFFFF;\n"
+"    border: 1px solid #4A90E2;\n"
+"    border-radius: 4px;\n"
+"    padding: 8px 16px;\n"
+"}\n"
+"\n"
+"#buttonSpecial:hover {\n"
+"    background-color: #357ABD;\n"
+"}\n"
+"\n"
+"#buttonSpecial:pressed {\n"
+"    background-color: #2C5F99;\n"
+"}")
         self.buttonFilterY.setObjectName("buttonFilterY")
         self.horizontalLayout_2.addWidget(self.buttonFilterY)
         self.verticalLayout.addWidget(self.frameLeftMenu, 0, QtCore.Qt.AlignmentFlag.AlignTop)
@@ -89,6 +134,21 @@ class Ui_MainWindow(object):
         self.labelPageFile.setObjectName("labelPageFile")
         self.horizontalLayout_4.addWidget(self.labelPageFile, 0, QtCore.Qt.AlignmentFlag.AlignLeft)
         self.buttonUploadCSV = QtWidgets.QPushButton(parent=self.frameTopOfPageFile)
+        self.buttonUploadCSV.setStyleSheet("#buttonSpecial {\n"
+"    background-color: #4A90E2;\n"
+"    color: #FFFFFF;\n"
+"    border: 1px solid #4A90E2;\n"
+"    border-radius: 4px;\n"
+"    padding: 8px 16px;\n"
+"}\n"
+"\n"
+"#buttonSpecial:hover {\n"
+"    background-color: #357ABD;\n"
+"}\n"
+"\n"
+"#buttonSpecial:pressed {\n"
+"    background-color: #2C5F99;\n"
+"}")
         self.buttonUploadCSV.setObjectName("buttonUploadCSV")
         self.horizontalLayout_4.addWidget(self.buttonUploadCSV, 0, QtCore.Qt.AlignmentFlag.AlignLeft)
         self.verticalLayout_4.addWidget(self.frameTopOfPageFile, 0, QtCore.Qt.AlignmentFlag.AlignTop)
@@ -156,9 +216,9 @@ class Ui_MainWindow(object):
         self.label_10 = QtWidgets.QLabel(parent=self.frame_11)
         self.label_10.setObjectName("label_10")
         self.horizontalLayout_17.addWidget(self.label_10)
-        self.comboBox_2 = QtWidgets.QComboBox(parent=self.frame_11)
-        self.comboBox_2.setObjectName("comboBox_2")
-        self.horizontalLayout_17.addWidget(self.comboBox_2)
+        self.comboMarkers = QtWidgets.QComboBox(parent=self.frame_11)
+        self.comboMarkers.setObjectName("comboMarkers")
+        self.horizontalLayout_17.addWidget(self.comboMarkers)
         self.verticalLayout_14.addWidget(self.frame_11)
         self.frame_12 = QtWidgets.QFrame(parent=self.frame_14)
         self.frame_12.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -169,9 +229,9 @@ class Ui_MainWindow(object):
         self.label_11 = QtWidgets.QLabel(parent=self.frame_12)
         self.label_11.setObjectName("label_11")
         self.horizontalLayout_18.addWidget(self.label_11)
-        self.comboBox_3 = QtWidgets.QComboBox(parent=self.frame_12)
-        self.comboBox_3.setObjectName("comboBox_3")
-        self.horizontalLayout_18.addWidget(self.comboBox_3)
+        self.comboMarkerSize = QtWidgets.QComboBox(parent=self.frame_12)
+        self.comboMarkerSize.setObjectName("comboMarkerSize")
+        self.horizontalLayout_18.addWidget(self.comboMarkerSize)
         self.verticalLayout_14.addWidget(self.frame_12)
         self.frame_13 = QtWidgets.QFrame(parent=self.frame_14)
         self.frame_13.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -182,10 +242,10 @@ class Ui_MainWindow(object):
         self.label_12 = QtWidgets.QLabel(parent=self.frame_13)
         self.label_12.setObjectName("label_12")
         self.horizontalLayout_19.addWidget(self.label_12)
-        self.checkBox = QtWidgets.QCheckBox(parent=self.frame_13)
-        self.checkBox.setText("")
-        self.checkBox.setObjectName("checkBox")
-        self.horizontalLayout_19.addWidget(self.checkBox)
+        self.checkBoxHideMarker = QtWidgets.QCheckBox(parent=self.frame_13)
+        self.checkBoxHideMarker.setText("")
+        self.checkBoxHideMarker.setObjectName("checkBoxHideMarker")
+        self.horizontalLayout_19.addWidget(self.checkBoxHideMarker)
         self.verticalLayout_14.addWidget(self.frame_13)
         self.verticalLayout_6.addWidget(self.frame_14)
         self.pagesMenu.addWidget(self.pageFilterY)
@@ -232,6 +292,21 @@ class Ui_MainWindow(object):
         self.checkBoxFilterX.setObjectName("checkBoxFilterX")
         self.horizontalLayout_5.addWidget(self.checkBoxFilterX)
         self.buttonResetFilters = QtWidgets.QPushButton(parent=self.frame)
+        self.buttonResetFilters.setStyleSheet("#buttonSpecial {\n"
+"    background-color: #4A90E2;\n"
+"    color: #FFFFFF;\n"
+"    border: 1px solid #4A90E2;\n"
+"    border-radius: 4px;\n"
+"    padding: 8px 16px;\n"
+"}\n"
+"\n"
+"#buttonSpecial:hover {\n"
+"    background-color: #357ABD;\n"
+"}\n"
+"\n"
+"#buttonSpecial:pressed {\n"
+"    background-color: #2C5F99;\n"
+"}")
         self.buttonResetFilters.setObjectName("buttonResetFilters")
         self.horizontalLayout_5.addWidget(self.buttonResetFilters)
         self.verticalLayout_9.addWidget(self.frame, 0, QtCore.Qt.AlignmentFlag.AlignTop)
@@ -346,6 +421,21 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.frameRightMenu)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.buttonMenu = QtWidgets.QPushButton(parent=self.frameRightMenu)
+        self.buttonMenu.setStyleSheet("#buttonSpecial {\n"
+"    background-color: #4A90E2;\n"
+"    color: #FFFFFF;\n"
+"    border: 1px solid #4A90E2;\n"
+"    border-radius: 4px;\n"
+"    padding: 8px 16px;\n"
+"}\n"
+"\n"
+"#buttonSpecial:hover {\n"
+"    background-color: #357ABD;\n"
+"}\n"
+"\n"
+"#buttonSpecial:pressed {\n"
+"    background-color: #2C5F99;\n"
+"}")
         self.buttonMenu.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/feather/menu.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
@@ -432,6 +522,21 @@ class Ui_MainWindow(object):
         self.label_7.setObjectName("label_7")
         self.horizontalLayout_14.addWidget(self.label_7)
         self.buttonCreateGraph = QtWidgets.QPushButton(parent=self.frame_7)
+        self.buttonCreateGraph.setStyleSheet("#buttonSpecial {\n"
+"    background-color: #4A90E2;\n"
+"    color: #FFFFFF;\n"
+"    border: 1px solid #4A90E2;\n"
+"    border-radius: 4px;\n"
+"    padding: 8px 16px;\n"
+"}\n"
+"\n"
+"#buttonSpecial:hover {\n"
+"    background-color: #357ABD;\n"
+"}\n"
+"\n"
+"#buttonSpecial:pressed {\n"
+"    background-color: #2C5F99;\n"
+"}")
         self.buttonCreateGraph.setObjectName("buttonCreateGraph")
         self.horizontalLayout_14.addWidget(self.buttonCreateGraph)
         self.horizontalLayout_3.addWidget(self.frame_7, 0, QtCore.Qt.AlignmentFlag.AlignTop)
@@ -449,6 +554,21 @@ class Ui_MainWindow(object):
         self.label_8.setObjectName("label_8")
         self.horizontalLayout_15.addWidget(self.label_8, 0, QtCore.Qt.AlignmentFlag.AlignTop)
         self.buttonPopUp = QtWidgets.QPushButton(parent=self.frame_8)
+        self.buttonPopUp.setStyleSheet("#buttonSpecial {\n"
+"    background-color: #4A90E2;\n"
+"    color: #FFFFFF;\n"
+"    border: 1px solid #4A90E2;\n"
+"    border-radius: 4px;\n"
+"    padding: 8px 16px;\n"
+"}\n"
+"\n"
+"#buttonSpecial:hover {\n"
+"    background-color: #357ABD;\n"
+"}\n"
+"\n"
+"#buttonSpecial:pressed {\n"
+"    background-color: #2C5F99;\n"
+"}")
         self.buttonPopUp.setObjectName("buttonPopUp")
         self.horizontalLayout_15.addWidget(self.buttonPopUp)
         self.horizontalLayout_3.addWidget(self.frame_8, 0, QtCore.Qt.AlignmentFlag.AlignTop)
@@ -468,7 +588,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.pagesMenu.setCurrentIndex(1)
+        self.pagesMenu.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -481,7 +601,7 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "# of Y Datas"))
         self.label_10.setText(_translate("MainWindow", "Marker"))
         self.label_11.setText(_translate("MainWindow", "Marker Size"))
-        self.label_12.setText(_translate("MainWindow", "Hide"))
+        self.label_12.setText(_translate("MainWindow", "Enable"))
         self.label_3.setText(_translate("MainWindow", "Data on X"))
         self.checkBoxFilterX.setText(_translate("MainWindow", "Enable Filters"))
         self.buttonResetFilters.setText(_translate("MainWindow", "Reset Filters"))

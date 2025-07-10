@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>941</width>
-    <height>643</height>
+    <width>933</width>
+    <height>582</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,6 +51,23 @@
               <bold>false</bold>
              </font>
             </property>
+            <property name="styleSheet">
+             <string notr="true">#buttonSpecial {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    border: 1px solid #4A90E2;
+    border-radius: 4px;
+    padding: 8px 16px;
+}
+
+#buttonSpecial:hover {
+    background-color: #357ABD;
+}
+
+#buttonSpecial:pressed {
+    background-color: #2C5F99;
+}</string>
+            </property>
             <property name="text">
              <string>File</string>
             </property>
@@ -65,6 +82,23 @@
               <bold>false</bold>
              </font>
             </property>
+            <property name="styleSheet">
+             <string notr="true">#buttonSpecial {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    border: 1px solid #4A90E2;
+    border-radius: 4px;
+    padding: 8px 16px;
+}
+
+#buttonSpecial:hover {
+    background-color: #357ABD;
+}
+
+#buttonSpecial:pressed {
+    background-color: #2C5F99;
+}</string>
+            </property>
             <property name="text">
              <string>FilterX</string>
             </property>
@@ -78,6 +112,23 @@
               <pointsize>13</pointsize>
               <bold>false</bold>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">#buttonSpecial {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    border: 1px solid #4A90E2;
+    border-radius: 4px;
+    padding: 8px 16px;
+}
+
+#buttonSpecial:hover {
+    background-color: #357ABD;
+}
+
+#buttonSpecial:pressed {
+    background-color: #2C5F99;
+}</string>
             </property>
             <property name="text">
              <string>FilterY</string>
@@ -105,7 +156,7 @@
           <item>
            <widget class="QStackedWidget" name="pagesMenu">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="pageFile">
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -130,6 +181,23 @@
                  </item>
                  <item alignment="Qt::AlignmentFlag::AlignLeft">
                   <widget class="QPushButton" name="buttonUploadCSV">
+                   <property name="styleSheet">
+                    <string notr="true">#buttonSpecial {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    border: 1px solid #4A90E2;
+    border-radius: 4px;
+    padding: 8px 16px;
+}
+
+#buttonSpecial:hover {
+    background-color: #357ABD;
+}
+
+#buttonSpecial:pressed {
+    background-color: #2C5F99;
+}</string>
+                   </property>
                    <property name="text">
                     <string>Upload CSV</string>
                    </property>
@@ -235,7 +303,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QComboBox" name="comboBox_2"/>
+                     <widget class="QComboBox" name="comboMarkers"/>
                     </item>
                    </layout>
                   </widget>
@@ -257,7 +325,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QComboBox" name="comboBox_3"/>
+                     <widget class="QComboBox" name="comboMarkerSize"/>
                     </item>
                    </layout>
                   </widget>
@@ -274,12 +342,12 @@
                     <item>
                      <widget class="QLabel" name="label_12">
                       <property name="text">
-                       <string>Hide</string>
+                       <string>Enable</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QCheckBox" name="checkBox">
+                     <widget class="QCheckBox" name="checkBoxHideMarker">
                       <property name="text">
                        <string/>
                       </property>
@@ -357,6 +425,23 @@
                     </item>
                     <item>
                      <widget class="QPushButton" name="buttonResetFilters">
+                      <property name="styleSheet">
+                       <string notr="true">#buttonSpecial {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    border: 1px solid #4A90E2;
+    border-radius: 4px;
+    padding: 8px 16px;
+}
+
+#buttonSpecial:hover {
+    background-color: #357ABD;
+}
+
+#buttonSpecial:pressed {
+    background-color: #2C5F99;
+}</string>
+                      </property>
                       <property name="text">
                        <string>Reset Filters</string>
                       </property>
@@ -553,6 +638,23 @@
             <layout class="QHBoxLayout" name="horizontalLayout_8">
              <item>
               <widget class="QPushButton" name="buttonMenu">
+               <property name="styleSheet">
+                <string notr="true">#buttonSpecial {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    border: 1px solid #4A90E2;
+    border-radius: 4px;
+    padding: 8px 16px;
+}
+
+#buttonSpecial:hover {
+    background-color: #357ABD;
+}
+
+#buttonSpecial:pressed {
+    background-color: #2C5F99;
+}</string>
+               </property>
                <property name="text">
                 <string/>
                </property>
@@ -706,6 +808,23 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="buttonCreateGraph">
+                  <property name="styleSheet">
+                   <string notr="true">#buttonSpecial {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    border: 1px solid #4A90E2;
+    border-radius: 4px;
+    padding: 8px 16px;
+}
+
+#buttonSpecial:hover {
+    background-color: #357ABD;
+}
+
+#buttonSpecial:pressed {
+    background-color: #2C5F99;
+}</string>
+                  </property>
                   <property name="text">
                    <string>Create Graph</string>
                   </property>
@@ -744,6 +863,23 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="buttonPopUp">
+                  <property name="styleSheet">
+                   <string notr="true">#buttonSpecial {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    border: 1px solid #4A90E2;
+    border-radius: 4px;
+    padding: 8px 16px;
+}
+
+#buttonSpecial:hover {
+    background-color: #357ABD;
+}
+
+#buttonSpecial:pressed {
+    background-color: #2C5F99;
+}</string>
+                  </property>
                   <property name="text">
                    <string>Pop-up</string>
                   </property>
