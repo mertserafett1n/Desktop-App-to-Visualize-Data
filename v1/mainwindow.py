@@ -3,8 +3,12 @@ import os.path
 import sys
 
 from PyQt6.QtWidgets import QComboBox, QLabel
-from PyQt6.QtCore import Qt, QSettings, QTimer
-from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem, QMessageBox, QDialog, QVBoxLayout, QWidget, QHBoxLayout
+from PyQt6.QtCore import Qt, QSettings, QTimer, QSize
+from PyQt6.QtWidgets import (
+    QApplication, QMainWindow, QFileDialog, QListWidgetItem,
+    QMessageBox, QDialog, QVBoxLayout, QWidget, QHBoxLayout,
+    QComboBox, QPushButton, QSizePolicy
+)
 import pandas as pd
 import pyqtgraph as pg
 
@@ -26,9 +30,6 @@ class TimeAxisItem(pg.AxisItem):
         m = (seconds % 3600) // 60
         s = seconds % 60
         return f"{h:02}:{m:02}:{s:02}"
-
-
-
 
 
 class MainWindow(QMainWindow):
@@ -64,6 +65,7 @@ class MainWindow(QMainWindow):
 
         # FILTER Y COMBOBOXES!!!!!
         self.ui.spinBox.valueChanged.connect(self.update_Y_Axis_list)
+        self.ui.listWidgetFilterY.setSpacing(5)  # 5 pixels between rows
 
         #GRAFİK ÇİZİM YERİ.
         time_axis = TimeAxisItem(orientation='bottom')
@@ -75,7 +77,7 @@ class MainWindow(QMainWindow):
 
 
 
-        #GPT SAID USE LIKE THIS
+        #GPT SAID USE LIKE THIS??
         self.settings = QSettings("ASPILSAN", "DesktopApp")
 
         last_folder = self.settings.value("csv_folder", "")
@@ -136,32 +138,48 @@ class MainWindow(QMainWindow):
         for comboBox in self.comboBoxYAxis:
             comboBox.clear()
             self.add_items_comboBox(comboBox)
+
     def update_Y_Axis_list(self):
         desired_count = self.ui.spinBox.value()
         current_count = self.ui.listWidgetFilterY.count()
 
-        # adding comboBox
+        #Add new items if needed
         if desired_count > current_count:
             for i in range(desired_count - current_count):
                 item = QListWidgetItem()
-                #labelOfCombo = QLabel("1")
+                item.setFlags(Qt.ItemFlag.ItemIsEnabled)  # Only enabled
+                item.setSizeHint(QSize(item.sizeHint().width(), 40))
 
                 container = QWidget()
-
                 layout = QHBoxLayout()
-                layout.setContentsMargins(5,5,5,5)
+                layout.setContentsMargins(5, 5, 5, 5)
 
                 comboBox = QComboBox()
                 self.add_items_comboBox(comboBox)
                 self.comboBoxYAxis.append(comboBox)
 
+
+                #DESIGN!!
+                container.setFixedHeight(50)
+                comboBox.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToContents)
+                comboBox.setMinimumHeight(30)  # For example
+                comboBox.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+                layout.setContentsMargins(5, 5, 5, 5)
+                layout.setSpacing(5)
+
+                remove_button = QPushButton("✕")
+                remove_button.setFixedSize(25, 25)
+                remove_button.setStyleSheet("QPushButton {font-size: 10px; padding: 0;}")
+
+                # Connect remove button to remove this comboBox
+                remove_button.clicked.connect(lambda _, cb=comboBox: self.remove_Y_Axis_item(cb))
+
                 layout.addWidget(comboBox)
+                layout.addWidget(remove_button)
                 container.setLayout(layout)
 
-                #print("Available Y axis comboBoxes: ", self.comboBoxYAxis)
-
                 self.ui.listWidgetFilterY.addItem(item)
-                self.ui.listWidgetFilterY.setItemWidget(item,container)
+                self.ui.listWidgetFilterY.setItemWidget(item, container)
 
         elif desired_count < current_count:
             for _ in range(current_count - desired_count):
@@ -172,6 +190,7 @@ class MainWindow(QMainWindow):
                 if widget is not None:
                     widget.deleteLater()
                 del item
+
     def add_items_comboBox(self, combo):
         combo.clear()
         for idx, file_path in enumerate(self.available_CSV_FilesNames):
@@ -306,6 +325,19 @@ class MainWindow(QMainWindow):
 
         for file in csv_files:
             self.load_csv(file)
+
+    def remove_Y_Axis_item(self, comboBox):
+        for i in range(self.ui.listWidgetFilterY.count()):
+            item = self.ui.listWidgetFilterY.item(i)
+            container = self.ui.listWidgetFilterY.itemWidget(item)
+            if container:
+                if container.findChild(QComboBox) == comboBox:
+                    self.comboBoxYAxis.remove(comboBox)
+                    self.ui.listWidgetFilterY.takeItem(i)
+                    container.deleteLater()
+                    del item
+                    self.ui.spinBox.setValue(self.ui.listWidgetFilterY.count())
+                    break
 
 
 if __name__ == "__main__":

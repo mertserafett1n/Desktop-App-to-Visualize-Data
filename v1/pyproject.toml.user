@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 17.0.0, 2025-07-09T14:41:20. -->
+<!-- Written by QtCreator 17.0.0, 2025-07-10T14:34:34. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -152,7 +152,7 @@
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">mainwindow.py</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.</value>
      <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/mertserafettinkargi/Desktop/ASPILSAN/Desktop-App-to-Visualize-Data/v1/mainwindow.py</value>
-     <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">false</value>
+     <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">true</value>
      <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/mertserafettinkargi/Desktop/ASPILSAN/Desktop-App-to-Visualize-Data/v1/mainwindow.py</value>
      <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
      <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
@@ -189,7 +189,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">mainwindow.py</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/mertserafettinkargi/Desktop/ASPILSAN/Desktop-App-to-Visualize-Data/v1/mainwindow.py</value>
-    <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">false</value>
+    <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">true</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/mertserafettinkargi/Desktop/ASPILSAN/Desktop-App-to-Visualize-Data/v1/mainwindow.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
