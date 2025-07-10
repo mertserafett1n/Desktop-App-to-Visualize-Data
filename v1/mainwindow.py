@@ -1,7 +1,7 @@
 # This Python file uses the following encoding: utf-8
 import os.path
 import sys
-
+import glob
 from PyQt6.QtWidgets import QComboBox, QLabel
 from PyQt6.QtCore import Qt, QSettings, QTimer, QSize
 from PyQt6.QtWidgets import (
@@ -11,14 +11,14 @@ from PyQt6.QtWidgets import (
 )
 import pandas as pd
 import pyqtgraph as pg
-
+from PyQt6.QtGui import QDoubleValidator
 # Important:
 # You need to run the following command to generate the ui_form.py file
 #     pyside6-uic form.ui -o ui_form.py, or
 #     pyside2-uic form.ui -o ui_form.py
 from ui_form import Ui_MainWindow
 import resources_rc
-import pyqtgraph as pg
+
 
 class TimeAxisItem(pg.AxisItem):
     def tickStrings(self, values, scale, spacing):
@@ -75,7 +75,10 @@ class MainWindow(QMainWindow):
         self.ui.buttonCreateGraph.clicked.connect(lambda: self.plot_graph())
         self.ui.buttonPopUp.clicked.connect(self.pop_up_graph)
 
-
+        #FilterX line Edits
+        self.ui.buttonResetFilters.clicked.connect(self.reset_filters)
+        self.ui.lineEditMinX.setValidator(QDoubleValidator())
+        self.ui.lineEditMaxX.setValidator(QDoubleValidator())
 
         #GPT SAID USE LIKE THIS??
         self.settings = QSettings("ASPILSAN", "DesktopApp")
@@ -104,7 +107,6 @@ class MainWindow(QMainWindow):
 
         # if comes from main
         if plot_widget is None:
-            print("ahaha")
             # Removing old widget from layout
             self.ui.verticalLayout_10.removeWidget(self.plot_widget)
             self.plot_widget.deleteLater()
@@ -127,6 +129,30 @@ class MainWindow(QMainWindow):
         # If timestamp
         if is_time_axis:
             x = (x - x.iloc[0]).dt.total_seconds()
+
+        if self.ui.checkBoxFilterX.isChecked():
+            # Apply your min/max filter
+            min_text = self.ui.lineEditMinX.text().strip()
+            max_text = self.ui.lineEditMaxX.text().strip()
+
+            mask = pd.Series([True] * len(x))
+
+            if min_text:
+                try:
+                    min_value = float(min_text)
+                    mask &= x >= min_value
+                except ValueError:
+                    QMessageBox.warning(self, "Invalid Min", "Min X must be a number.")
+
+            if max_text:
+                try:
+                    max_value = float(max_text)
+                    mask &= x <= max_value
+                except ValueError:
+                    QMessageBox.warning(self, "Invalid Max", "Max X must be a number.")
+
+            x = x[mask]
+            y_series = [y[mask] for y in y_series]
 
         colors = ['r', 'g', 'b', 'm', 'c', 'y']
         for i, y in enumerate(y_series):
@@ -338,6 +364,11 @@ class MainWindow(QMainWindow):
                     del item
                     self.ui.spinBox.setValue(self.ui.listWidgetFilterY.count())
                     break
+
+
+    def reset_filters(self):
+        self.ui.lineEditMaxX.clear()
+        self.ui.lineEditMinX.clear()
 
 
 if __name__ == "__main__":

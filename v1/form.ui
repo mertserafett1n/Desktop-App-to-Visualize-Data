@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>859</width>
+    <width>941</width>
     <height>643</height>
    </rect>
   </property>
@@ -14,6 +14,9 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item alignment="Qt::AlignmentFlag::AlignLeft">
      <widget class="QFrame" name="frameLeft">
@@ -43,7 +46,9 @@
            <widget class="QPushButton" name="buttonFile">
             <property name="font">
              <font>
-              <bold>true</bold>
+              <family>Segoe UI</family>
+              <pointsize>13</pointsize>
+              <bold>false</bold>
              </font>
             </property>
             <property name="text">
@@ -55,7 +60,9 @@
            <widget class="QPushButton" name="buttonFilterX">
             <property name="font">
              <font>
-              <bold>true</bold>
+              <family>Segoe UI</family>
+              <pointsize>13</pointsize>
+              <bold>false</bold>
              </font>
             </property>
             <property name="text">
@@ -67,7 +74,9 @@
            <widget class="QPushButton" name="buttonFilterY">
             <property name="font">
              <font>
-              <bold>true</bold>
+              <family>Segoe UI</family>
+              <pointsize>13</pointsize>
+              <bold>false</bold>
              </font>
             </property>
             <property name="text">
@@ -96,7 +105,7 @@
           <item>
            <widget class="QStackedWidget" name="pagesMenu">
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="pageFile">
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -205,6 +214,78 @@
                 <property name="frameShadow">
                  <enum>QFrame::Shadow::Raised</enum>
                 </property>
+                <layout class="QVBoxLayout" name="verticalLayout_14">
+                 <item>
+                  <widget class="QFrame" name="frame_11">
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_17">
+                    <item>
+                     <widget class="QLabel" name="label_10">
+                      <property name="text">
+                       <string>Marker</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="comboBox_2"/>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="frame_12">
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_18">
+                    <item>
+                     <widget class="QLabel" name="label_11">
+                      <property name="text">
+                       <string>Marker Size</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="comboBox_3"/>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="frame_13">
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_19">
+                    <item>
+                     <widget class="QLabel" name="label_12">
+                      <property name="text">
+                       <string>Hide</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QCheckBox" name="checkBox">
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
              </layout>
@@ -223,7 +304,7 @@
                  <item alignment="Qt::AlignmentFlag::AlignLeft">
                   <widget class="QLabel" name="label_3">
                    <property name="text">
-                    <string/>
+                    <string>Data on X</string>
                    </property>
                   </widget>
                  </item>
@@ -265,16 +346,16 @@
                    </property>
                    <layout class="QHBoxLayout" name="horizontalLayout_5">
                     <item>
-                     <widget class="QCheckBox" name="checkBox">
+                     <widget class="QCheckBox" name="checkBoxFilterX">
                       <property name="text">
-                       <string>Filter</string>
+                       <string>Enable Filters</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QPushButton" name="pushButton">
+                     <widget class="QPushButton" name="buttonResetFilters">
                       <property name="text">
-                       <string>ResetFilters</string>
+                       <string>Reset Filters</string>
                       </property>
                      </widget>
                     </item>
@@ -360,6 +441,51 @@
                       <property name="frameShadow">
                        <enum>QFrame::Shadow::Raised</enum>
                       </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_13">
+                       <item>
+                        <widget class="QFrame" name="frame_9">
+                         <property name="frameShape">
+                          <enum>QFrame::Shape::StyledPanel</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Shadow::Raised</enum>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayout_16">
+                          <item>
+                           <widget class="QLabel" name="label_9">
+                            <property name="text">
+                             <string>Grid:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QCheckBox" name="checkBoxGridX">
+                            <property name="text">
+                             <string>X</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QCheckBox" name="checkBoxGridY">
+                            <property name="text">
+                             <string>Y</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QFrame" name="frame_10">
+                         <property name="frameShape">
+                          <enum>QFrame::Shape::StyledPanel</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Shadow::Raised</enum>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                    </layout>
@@ -464,6 +590,8 @@
               <widget class="QPushButton" name="buttonAlt">
                <property name="font">
                 <font>
+                 <family>Segoe UI</family>
+                 <pointsize>13</pointsize>
                  <bold>false</bold>
                 </font>
                </property>
@@ -548,7 +676,7 @@
                   <property name="maximumSize">
                    <size>
                     <width>40</width>
-                    <height>40</height>
+                    <height>30</height>
                    </size>
                   </property>
                   <property name="text">
@@ -582,7 +710,7 @@
                  <widget class="QLabel" name="label_8">
                   <property name="maximumSize">
                    <size>
-                    <width>40</width>
+                    <width>30</width>
                     <height>30</height>
                    </size>
                   </property>
@@ -591,6 +719,9 @@
                   </property>
                   <property name="pixmap">
                    <pixmap resource="resources.qrc">:/icons/feather/external-link.svg</pixmap>
+                  </property>
+                  <property name="scaledContents">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
