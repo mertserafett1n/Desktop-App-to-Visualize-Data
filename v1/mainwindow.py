@@ -5,7 +5,7 @@ import glob
 import csv
 from PyQt6.QtWidgets import QComboBox, QLabel
 from PyQt6.QtCore import Qt, QSettings, QTimer, QSize, QPropertyAnimation, QEasingCurve, QParallelAnimationGroup
-from PyQt6 import QtGui
+from PyQt6 import QtGui, QtWidgets
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QFileDialog, QListWidgetItem,
     QMessageBox, QDialog, QVBoxLayout, QWidget, QHBoxLayout,
@@ -73,10 +73,17 @@ class MainWindow(QMainWindow):
         self.ui.listWidgetFilterY.setSpacing(5)  # 5 pixels between rows
 
         #GRAFİK ÇİZİM YERİ.
+        # Create layout for frameChart
+        self.chart_layout = QtWidgets.QVBoxLayout(self.ui.frameChart)
+        self.chart_layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
+        self.chart_layout.setSpacing(0)  # Remove spacing
+        
         time_axis = TimeAxisItem(orientation='bottom')
         self.plot_widget = pg.PlotWidget(axisItems={'bottom': time_axis})
         self.plot_widget.addLegend()
-        self.ui.verticalLayout_10.addWidget(self.plot_widget)
+        
+        # Add plot widget to frameChart instead of verticalLayout_10
+        self.chart_layout.addWidget(self.plot_widget)
         self.ui.buttonCreateGraph.clicked.connect(lambda: self.plot_graph())
         self.ui.buttonPopUp.clicked.connect(self.pop_up_graph)
 
@@ -117,7 +124,7 @@ class MainWindow(QMainWindow):
         # if comes from main
         if plot_widget is None:
             # Removing old widget from layout
-            self.ui.verticalLayout_10.removeWidget(self.plot_widget)
+            self.chart_layout.removeWidget(self.plot_widget)
             self.plot_widget.deleteLater()
 
             if is_time_axis:
@@ -127,7 +134,7 @@ class MainWindow(QMainWindow):
                 self.plot_widget = pg.PlotWidget()
 
             self.plot_widget.addLegend()
-            self.ui.verticalLayout_10.addWidget(self.plot_widget)
+            self.chart_layout.addWidget(self.plot_widget)
             plot_widget = self.plot_widget
 
         else:
