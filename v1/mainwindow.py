@@ -151,7 +151,7 @@ class MainWindow(QMainWindow):
             min_text = self.ui.lineEditMinX.text().strip()
             max_text = self.ui.lineEditMaxX.text().strip()
 
-            mask = pd.Series([True] * len(x))
+            mask = pd.Series([True] * len(x), index=x.index)
 
             if min_text:
                 try:
@@ -159,6 +159,7 @@ class MainWindow(QMainWindow):
                     mask &= x >= min_value
                 except ValueError:
                     QMessageBox.warning(self, "Invalid Min", "Min X must be a number.")
+                    return
 
             if max_text:
                 try:
@@ -166,9 +167,16 @@ class MainWindow(QMainWindow):
                     mask &= x <= max_value
                 except ValueError:
                     QMessageBox.warning(self, "Invalid Max", "Max X must be a number.")
+                    return
 
-            x = x[mask]
-            y_series = [y[mask] for y in y_series]
+            # Check if filter results in any data
+            if not mask.any():
+                QMessageBox.warning(self, "No Data", "Filter resulted in no data points. Please adjust your filter values.")
+                return
+
+            # Apply filter and reset index to avoid KeyError issues
+            x = x[mask].reset_index(drop=True)
+            y_series = [y[mask].reset_index(drop=True) for y in y_series]
         plot_widget.showGrid(x = self.ui.checkBoxGridX.isChecked(), y = self.ui.checkBoxGridY.isChecked())
         if self.ui.checkBoxHideMarker.isChecked():
             marker_style = self.ui.comboMarkers.currentData()
