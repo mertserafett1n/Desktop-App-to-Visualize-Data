@@ -231,7 +231,7 @@ class MainWindow(QMainWindow):
 
                 remove_button = QPushButton("✕")
                 remove_button.setFixedSize(25, 25)
-                remove_button.setStyleSheet("QPushButton {font-size: 10px; padding: 0;}")
+                # Styling handled by stylesheet now
 
                 # Connect remove button to remove this comboBox
                 remove_button.clicked.connect(lambda _, cb=comboBox: self.remove_Y_Axis_item(cb))

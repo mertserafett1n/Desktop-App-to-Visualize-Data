@@ -50,8 +50,8 @@ QFrame#frameRight {
 }
 
 QFrame#frameRightUp {
-    background-color: #f8f9fa;
-    border: 1px solid #e1e8ed;
+    background-color: #e9ecef;
+    border: 1px solid #d1d9e0;
     border-radius: 6px;
     margin-bottom: 8px;
 }
@@ -87,6 +87,14 @@ QFrame#frameBottomOfFilterX {
     background-color: #ffffff;
     border: 1px solid #d1d9e0;
     border-radius: 4px;
+}
+
+/* FilterX specific frame styling */
+QFrame#frame {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e8ed;
+    border-radius: 4px;
+    margin-bottom: 4px;
 }
 
 /* ===== BUTTON STYLING ===== */
@@ -218,20 +226,23 @@ QPushButton#buttonClose:pressed {
 /* ===== INPUT WIDGETS ===== */
 QLineEdit {
     background-color: #ffffff;
-    border: 1px solid #d1d9e0;
-    border-radius: 4px;
-    padding: 8px 12px;
+    border: 2px solid #d1d9e0;
+    border-radius: 6px;
+    padding: 10px 14px;
     font-size: 13px;
     color: #2c3e50;
+    font-weight: 500;
 }
 
 QLineEdit:focus {
-    border-color: #748194;
+    border-color: #6c757d;
+    background-color: #fafbfc;
     outline: none;
 }
 
 QLineEdit:hover {
     border-color: #9ca3af;
+    background-color: #f8f9fa;
 }
 
 /* ===== COMBOBOX STYLING ===== */
@@ -335,6 +346,70 @@ QListWidget::item:hover {
 QListWidget::item:selected {
     background-color: #e9ecef;
     color: #2c3e50;
+}
+
+/* ===== LISTWIDGET CONTAINER WIDGETS ===== */
+/* Style for container widgets in listWidgetFilterY */
+QListWidget QWidget {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e8ed;
+    border-radius: 6px;
+    margin: 2px;
+    padding: 2px;
+}
+
+QListWidget QWidget:hover {
+    background-color: #e9ecef;
+    border-color: #d1d9e0;
+}
+
+/* ===== LISTWIDGET REMOVE BUTTONS ===== */
+/* Style for remove buttons in listWidgetFilterY */
+QListWidget QWidget QPushButton {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: 1px solid #dc3545;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px;
+    min-width: 20px;
+    min-height: 20px;
+    max-width: 25px;
+    max-height: 25px;
+}
+
+QListWidget QWidget QPushButton:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+    transform: scale(1.1);
+}
+
+QListWidget QWidget QPushButton:pressed {
+    background-color: #a71e2a;
+    border-color: #9a1c28;
+}
+
+/* ===== LISTWIDGET COMBOBOXES ===== */
+/* Style for comboboxes in listWidgetFilterY */
+QListWidget QWidget QComboBox {
+    background-color: #ffffff;
+    border: 1px solid #d1d9e0;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #2c3e50;
+    min-height: 18px;
+}
+
+QListWidget QWidget QComboBox:hover {
+    border-color: #9ca3af;
+    background-color: #f8f9fa;
+}
+
+QListWidget QWidget QComboBox:focus {
+    border-color: #6c757d;
+    background-color: #fafbfc;
 }
 
 /* ===== CHECKBOX STYLING ===== */
@@ -442,10 +517,19 @@ QScrollBar::sub-line:horizontal {
 }
 
 /* ===== SPECIAL FRAME OVERRIDES ===== */
-/* Frames that should have no border */
+/* Input container frames with subtle background */
 QFrame#frame_5,
 QFrame#frame_6,
 QFrame#frame_9 {
+    border: none;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+/* Button container frames - no borders */
+QFrame#frame_7,
+QFrame#frame_8 {
     border: none;
     background-color: transparent;
 }
