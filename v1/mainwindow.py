@@ -41,6 +41,10 @@ class MainWindow(QMainWindow):
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        
+        # Load and apply the stylesheet
+        self.load_stylesheet()
+        
         self.ui.spinBox.setRange(0, 5)
         self.menu_open = True
 
@@ -441,6 +445,17 @@ class MainWindow(QMainWindow):
             self.showNormal()
         else:
             self.showMaximized()
+
+    def load_stylesheet(self):
+        """Load and apply the custom stylesheet"""
+        try:
+            with open('stylesheet.qss', 'r') as file:
+                stylesheet = file.read()
+                self.setStyleSheet(stylesheet)
+        except FileNotFoundError:
+            print("Warning: stylesheet.qss not found. Using default styling.")
+        except Exception as e:
+            print(f"Error loading stylesheet: {e}")
 
 
 if __name__ == "__main__":
